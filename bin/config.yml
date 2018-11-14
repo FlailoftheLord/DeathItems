@@ -1,0 +1,58 @@
+#-----------------------------------------------------------------
+#==================================================================#
+#                                                                  #
+#                 Plugin by FlailoftheLord.                        #
+#        -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                   #
+#   for questions please pm me on discord at FlailoftheLord#6842   #
+#          Join my discord server for faster support:              #
+#                https://discord.gg/wuxW5PS                        #
+#   ______               __        _____                           #
+#   |       |           /  \         |        |                    #
+#   |__     |          /____\        |        |                    #
+#   |       |         /      \       |        |                    #
+#   |       |_____   /        \    __|__      |______              #
+#                                                                  #
+#==================================================================#
+#-----------------------------------------------------------------
+
+# If set to true, you will be able to open an inventory to take your items out.
+# if set to false, it will just drop your items and xp when you click the death block.
+EnableInventoryMode: true
+# Title shown on top of the DeathInventory if enabled.
+DeathInventoryTitle: "&4&lDeath Inventory"
+# message sent if somebody uses the /deathinv command, but InventoryMode is disabled.
+InventoryDisabled: "&cThe Death Inventory has been disabled, enable it in the config.yml file to use the /deathinv command"
+
+
+# If EnableInventoryMode is set to false all these will be ignored.
+# Message to send to the player if they close their death inventory and there  are still items inside.
+InvNotEmpty: "&cyou still have items inside your DeathInventory... take them out ASAP!"
+# Message sent if the player tries to open their Empty death inventory via command.
+InvEmpty: "&cyou don't have any items in your DeathInventory!"
+
+
+# MESSAGES #
+# Customize the messages that the plugin sends to players
+
+# Plugin prefix, this is set before very plugin message,
+# You do not need to put a space, the plugin puts a space between the prefix and messages automatically!! ^-^/
+Prefix: "&8[&5&lD&d&lI&8]"
+
+ReloadMessage: "&aAll &afiles reloaded!"
+
+NoPermissionMessage: "&cyou don't have permission to use this."
+
+# Message sent to player when he dies.
+# use the %death-location% placeholder for the place where they died at.
+DeathMessage: "&7&lYou died, and your items are stored in a gold block at %death-location%"
+
+DeathLocationTeleport: "&ayou were teleported to your death location! click the gold block to retreive your items."
+
+ItemsRetrieved: "&aYou got all your items and xp back!"
+
+CannotBreak: "&cYou cannot break the DeathInventory block!"
+
+# Must be the Bukkit Item Name, you can see the entire list here:
+#  https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+DeathBlockType: "GOLD_BLOCK"
+

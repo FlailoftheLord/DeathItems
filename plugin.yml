@@ -1,0 +1,54 @@
+#
+#   Copyright (C) 2018 FlailoftheLord
+# 
+#  This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#  
+
+main: me.flail.DeathItems.DeathItems
+name: DeathItems
+version: 1.0.0
+author: FlailoftheLord
+description: Die in peace of mind knowing your Items are safe!
+softdepend: [PlaceholderAPI, Vault]
+api-version: 1.13
+
+permissions:
+  deathitems.command:
+    description: permission to use /deathitems
+    default: op
+  deathitems.command.all:
+    description: all commands
+    default: op
+    children:
+      deathitems.command.reload: true
+      deathitems.command.help: true
+      deathitems.command.deathlocation: true
+      deathitems.command.deathinv: true
+
+commands:
+   deathitems:
+     description: Base command for the DeathItems plugin
+     usage: /deathitems [help:reload]
+     aliases: [di, ditems, ditem, deathitem, deathi]
+   deathinv:
+     description:
+     usage: /deathinv [player]
+     aliases: [dinv, deathinventory]
+   deathlocation:
+     description: teleports them back to ur death location
+     usage: /deathlocation
+     aliases: [deathloc, dlocation, dloc, dl, back]
+     
+     
+     

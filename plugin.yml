@@ -20,7 +20,7 @@ name: DeathItems
 version: 1.0.0
 author: FlailoftheLord
 description: Die in peace of mind knowing your Items are safe!
-softdepend: [PlaceholderAPI, Vault]
+softdepend: [PlaceholderAPI, Vault, MicroCommands]
 api-version: 1.13
 
 permissions:

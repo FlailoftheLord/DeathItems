@@ -93,39 +93,120 @@ public class DeathBlockInteract implements Listener {
 						if (blockLoc.equals(deathLocation)) {
 
 							boolean invEnabled = config.getBoolean("EnableInventoryMode");
+							String invStringEnabled = config.getString("EnableInventoryMode");
 
-							if (invEnabled) {
+							if (invEnabled || invStringEnabled.equalsIgnoreCase("true")) {
 								Inventory deathInv = new DeathInventory().deathInv(player);
 								player.openInventory(deathInv);
 
 							} else {
 
-								int deathExp = drops.getInt(pUuid + ".DeathExp");
-
-								player.giveExp(deathExp);
-
+								// It doesn't like me casting ItemStack to an "Unchecked" list... so it throws a
+								// warning, this is blocked above...
 								List<ItemStack> playerDeathItems = (List<ItemStack>) drops
 										.getList(pUuid + ".DeathDrops");
 
-								for (ItemStack ditems : playerDeathItems) {
+								event.getClickedBlock().breakNaturally(new ItemStack(Material.AIR));
 
-									event.getClickedBlock().breakNaturally(new ItemStack(Material.AIR));
+								if (playerDeathItems != null) {
 
-									player.getWorld().dropItemNaturally(blockLoc, ditems);
+									for (ItemStack ditems : playerDeathItems) {
+
+										player.getWorld().dropItemNaturally(blockLoc, ditems);
+
+									}
+
+									String dItemsRetrieved = config.getString("ItemsRetrieved");
+
+									player.sendMessage(chat.m(dItemsRetrieved));
+
+								} else {
+
+									String invEmpty = config.getString("InvEmpty");
+
+									player.sendMessage(chat.m(invEmpty));
 
 								}
 
 								drops.set(pUuid + ".DeathDrops", null);
 
-								String dItemsRetrieved = config.getString("ItemsRetrieved");
-
-								String prefix = config.getString("Prefix");
-
-								player.sendMessage(chat.m(prefix + " " + dItemsRetrieved));
-
 							}
 
 							plugin.saveDrops();
+							// cancel the event just so players dont go placing blocks in undesired places
+							event.setCancelled(true);
+						}
+
+					}
+
+				}
+
+			}
+
+		} else if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+			// Keep players from breaking their own block...
+			/*
+			 * I will add a way for other players to steal a death inventory, or maybe a
+			 * method for players to "rob" a death inv. for now, if the player isn't the
+			 * owner of the death inv block, they won't be able to break it either.
+			 */
+
+			String deathBlock = config.getString("DeathBlockType");
+
+			String clickedBlock = event.getClickedBlock().getType().toString();
+
+			if (clickedBlock.equalsIgnoreCase(deathBlock)) {
+
+				if (!player.isOp() && !player.hasPermission("deathitems.*")
+						&& !player.hasPermission("deathitems.commmand.*")) {
+
+					for (String p : pData.getKeys(false)) {
+						String world = pData.getString(p + ".DeathLocation.World");
+						if (world != null) {
+							World w = plugin.getServer().getWorld(world);
+							int x = pData.getInt(p + ".DeathLocation.X");
+							int y = pData.getInt(p + ".DeathLocation.Y");
+							int z = pData.getInt(p + ".DeathLocation.Z");
+
+							Location dBlockLoc = new Location(w, x, y, z);
+
+							Location blockLoc = event.getClickedBlock().getLocation();
+
+							if (blockLoc.equals(dBlockLoc)) {
+								event.setCancelled(true);
+							}
+
+							break;
+						}
+					}
+				}
+
+				if (pData.getKeys(false).contains(pUuid)) {
+
+					ConfigurationSection cs = pData.getConfigurationSection(pUuid);
+
+					String deathWorld = cs.getString("DeathLocation.World");
+
+					if (deathWorld.equalsIgnoreCase(pWorld)) {
+
+						World dw = plugin.getServer().getWorld(deathWorld.toUpperCase());
+
+						int dbx = cs.getInt("DeathLocation.X");
+						int dby = cs.getInt("DeathLocation.Y");
+						int dbz = cs.getInt("DeathLocation.Z");
+
+						Location deathLocation = new Location(dw, dbx, dby, dbz);
+
+						Location blockLoc = event.getClickedBlock().getLocation();
+
+						if (blockLoc.equals(deathLocation)) {
+
+							String cantBreak = config.getString("CannotBreak");
+
+							player.sendMessage(chat.m(cantBreak));
+
+							event.setCancelled(true);
+
 						}
 
 					}

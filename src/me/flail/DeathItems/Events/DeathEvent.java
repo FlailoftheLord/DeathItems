@@ -21,10 +21,10 @@ package me.flail.DeathItems.Events;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,7 +35,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import me.flail.DeathItems.DeathItems;
 
-@SuppressWarnings("unused")
 public class DeathEvent implements Listener {
 
 	private DeathItems plugin = DeathItems.getPlugin(DeathItems.class);
@@ -57,13 +56,23 @@ public class DeathEvent implements Listener {
 
 		String pName = player.getName();
 
-		Location dLoc = player.getLocation();
-
 		Block dBlock = player.getLocation().getBlock();
+
+		boolean keepExp = config.getBoolean("KeepExp");
 
 		World deathWorld = player.getWorld();
 
 		String dWorld = deathWorld.getName();
+
+		ConfigurationSection oldDeathLoc = pData.getConfigurationSection("DeathLocation");
+
+		if (oldDeathLoc != null) {
+			String oldworldname = oldDeathLoc.getString("World");
+			World oldWorld = plugin.getServer().getWorld(oldworldname);
+			if (oldWorld != null) {
+
+			}
+		}
 
 		int dX = dBlock.getX();
 		int dY = dBlock.getY() + 1;
@@ -85,7 +94,13 @@ public class DeathEvent implements Listener {
 
 		List<ItemStack> deathDrops = new ArrayList<>();
 
-		int deathExp = event.getDroppedExp();
+		float deathExp = event.getDroppedExp();
+
+		if (keepExp) {
+			event.setKeepLevel(true);
+		} else {
+			event.setDroppedExp(0);
+		}
 
 		for (ItemStack d : event.getDrops()) {
 
@@ -112,7 +127,7 @@ public class DeathEvent implements Listener {
 
 		event.setDroppedExp(0);
 
-		drops.set(pUuid + ".DeathExp", deathExp);
+		drops.set(pUuid + ".DeathExp", (int) deathExp);
 		drops.set(pUuid + ".DeathDrops", deathDrops);
 
 		plugin.saveDrops();

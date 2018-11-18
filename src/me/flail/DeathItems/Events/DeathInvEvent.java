@@ -266,6 +266,8 @@ public class DeathInvEvent implements Listener {
 
 					if (invTitle.equals(dInvTitle)) {
 
+						FileConfiguration drops = plugin.getDrops();
+
 						boolean hasStuff = false;
 
 						ItemStack air = new ItemStack(Material.AIR);
@@ -276,6 +278,7 @@ public class DeathInvEvent implements Listener {
 
 								if ((i != null) && (i != air)) {
 									hasStuff = true;
+									break;
 								}
 
 							}
@@ -287,7 +290,7 @@ public class DeathInvEvent implements Listener {
 
 							String invNotEmpty = config.getString("InvNotEmpty");
 
-							player.sendMessage(chat.m("%prefix% " + invNotEmpty));
+							player.sendMessage(chat.m(invNotEmpty));
 
 						} else {
 
@@ -315,9 +318,11 @@ public class DeathInvEvent implements Listener {
 								targetBlock.setType(Material.AIR);
 							}
 
+							drops.set(pUuid + ".DeathDrops", null);
+
 							String dItemsRetrieved = config.getString("ItemsRetrieved");
 
-							player.sendMessage(chat.m("%prefix% " + dItemsRetrieved));
+							player.sendMessage(chat.m(dItemsRetrieved));
 						}
 
 					}

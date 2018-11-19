@@ -89,7 +89,7 @@ public class DiCommands implements CommandExecutor {
 							if (player.hasPermission("deathitems.command.reload")
 									|| player.hasPermission("deathitems.command.all")) {
 
-								plugin.loadDrops();
+								plugin.saveDrops();
 								plugin.savePlayerData();
 								plugin.reloadConfig();
 

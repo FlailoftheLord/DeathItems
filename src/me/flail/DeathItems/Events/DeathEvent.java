@@ -31,7 +31,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import me.flail.DeathItems.DeathItems;
 
@@ -94,40 +93,19 @@ public class DeathEvent implements Listener {
 
 		List<ItemStack> deathDrops = new ArrayList<>();
 
-		float deathExp = event.getDroppedExp();
-
-		if (keepExp) {
-			event.setKeepLevel(true);
-		} else {
-			event.setDroppedExp(0);
-		}
+		event.setKeepLevel(keepExp);
 
 		for (ItemStack d : event.getDrops()) {
 
 			if (d != null) {
-
-				int amount = d.getAmount();
-
-				Material dm = d.getType();
-
-				ItemStack pDrops = new ItemStack(dm, amount);
-
-				ItemMeta dMeta = d.getItemMeta();
-
-				pDrops.setItemMeta(dMeta);
-
-				if (pDrops != null) {
-					deathDrops.add(pDrops);
-				}
+				deathDrops.add(d);
 			}
-
 		}
 
 		event.getDrops().clear();
 
 		event.setDroppedExp(0);
 
-		drops.set(pUuid + ".DeathExp", (int) deathExp);
 		drops.set(pUuid + ".DeathDrops", deathDrops);
 
 		plugin.saveDrops();

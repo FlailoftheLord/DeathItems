@@ -29,7 +29,7 @@ public class Chat {
 
 		FileConfiguration config = plugin.getConfig();
 
-		String prefix = config.getString("Prefix");// .replace("&", "ยง");
+		String prefix = config.getString("Prefix");
 
 		return ChatColor.translateAlternateColorCodes('&', s.replace("%prefix%", prefix));
 

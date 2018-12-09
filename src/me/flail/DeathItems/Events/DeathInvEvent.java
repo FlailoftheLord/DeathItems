@@ -200,8 +200,6 @@ public class DeathInvEvent implements Listener {
 					plugin.saveDrops();
 				}
 
-			} else {
-				player.sendMessage("Em");
 			}
 
 		}
